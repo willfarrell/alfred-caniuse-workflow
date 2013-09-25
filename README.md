@@ -1,7 +1,7 @@
-caniuse.alfredworkflow (1.0)
+caniuse ([Download v1.0](https://raw.github.com/willfarrell/alfred-caniuse-workflow/master/caniuse.alfredworkflow))
 ============================
 
-Alfred App Workflow for caniuse.com [Download](https://raw.github.com/willfarrell/alfred-caniuse-workflow/master/caniuse.alfredworkflow)
+Alfred App Workflow for caniuse.com
 
 ![alt text][caniuse]
 

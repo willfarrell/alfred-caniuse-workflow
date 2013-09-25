@@ -1,5 +1,5 @@
 caniuse.alfredworkflow (1.0)
-=======================
+============================
 
 Alfred App Workflow for caniuse.com [Download](https://raw.github.com/willfarrell/alfred-caniuse-workflow/master/caniuse.alfredworkflow)
 

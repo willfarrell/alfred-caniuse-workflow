@@ -28,4 +28,4 @@ Alfred App Workflow for caniuse.com
 - [@sydlawrence](https://github.com/sydlawrence) - [alfred-dev-doctor](https://github.com/sydlawrence/alfred-dev-doctor)
 - [@Fyrd](https://github.com/Fyrd) - [caniuse](https://github.com/Fyrd/caniuse)
 
-[caniuse]: ./screenshots/caniuse.png "Sample search"
+[caniuse]: ./screenshots/caniuse-browser.png "Sample search"

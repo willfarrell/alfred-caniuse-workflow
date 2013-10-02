@@ -4,47 +4,44 @@
 require_once('workflows.php');
 $w = new Workflows();
 
-// CACHING
-if ( filemtime("data.json") <= time()-60*60*24*7 ) {
+// cache
+
+function browserVersion($stats) {
+	$version = 0;
+	foreach ($stats as $key => $val) {
+		if ($version < $key && $val == 'y') {
+			$version = $key;
+		}
+	}
+	return $version ? $version."+" : "-";
+}
+
+if ( filemtime("data.json") <= time()-86400*7  || 1) {
     $data = json_decode(file_get_contents("https://raw.github.com/Fyrd/caniuse/master/data.json"));
-    addResults($data->data);
-    save();
-}
-
-function update() {
-    $data = json_decode(file_get_contents("https://raw.github.com/Fyrd/caniuse/master/data.json"));
-    $this->addResults($data->data);
-    $this->save();
-}
-
-function save() {
-    if (count($this->results) === 0) {
-        echo strtoupper($this->display_name)." FAILED\n";
-        return;
-    }
-    file_put_contents(PARSER_URL."data/".$this->data_filename, json_encode($this->results));
-    echo strtoupper($this->display_name)." DONE\n";
-}
-
-function addResults($arr) {
-    foreach ($arr as $key => $val) {
+    $arr = array();
+    foreach ($data->data as $key => $val) {
         $title = $val->title;
         $url = "http://caniuse.com/#feat=" . $key;
         $description = $val->description;
-        $this->addResult($url, $title, $description);
+        
+        $stats = array();
+        foreach ($val->stats as $browser => $stat) {
+	        $stats[$browser] = browserVersion($val->stats->$browser);
+        }
+        
+        $arr[] = array(
+            "url" => $url ,
+			"title" => $title,
+			"description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($val->description))))),
+			"stats" => "\t[C:{$stats['chrome']}, IE:{$stats['ie']}, FF:{$stats['firefox']}, S:{$stats['safari']}]"
+        );
+    }
+    if (count($arr)) {
+        file_put_contents("data.json", json_encode($arr));
     }
 }
 
-function addResult($url, $title, $description) {
-    $this->results[] = array(
-        "url" => $url ,
-        "title" => $title,
-        "description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($description)))))
-    );
-}
-// END CACHE
-
-if (!isset($query)) { $query = urlencode( "{query}" ); }
+if (!isset($query)) { $query = urlencode( "css" ); }
 
 $data = json_decode(file_get_contents("data.json"));
 
@@ -59,7 +56,7 @@ foreach ($data as $key => $result) {
 	if (strpos($value, $query) === 0) {
         if (!isset($found[$value])) {
             $found[$value] = true;
-            $w->result( $type.$result->title, $result->url, $result->title, $result->description, "icon.png" );
+            $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png" );
         }
     }
     else if (strpos($value, $query) > 0) {
@@ -78,12 +75,12 @@ foreach ($data as $key => $result) {
 }
 
 foreach ($extras as $key => $result) {
-        $w->result( $type.$result->title, $result->url, $result->title, $result->description, "icon.png"  );
+        $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
 
 }
 
 foreach ($extras2 as $key => $result) {
-        $w->result( $type.$result->title, $result->url, $result->title, $result->description, "icon.png"  );
+        $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
 
 }
 

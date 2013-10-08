@@ -1,4 +1,4 @@
 {
-	"version": 1.1,
-	"remote_json": "https://raw.github.com/willfarrell/alfred-workflows/master/caniuse.json"
+	"version": 1.2,
+	"remote_json": "https://raw.github.com/willfarrell/alfred-caniuse-workflow/master/current-version.json"
 }

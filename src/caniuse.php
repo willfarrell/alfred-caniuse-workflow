@@ -9,7 +9,7 @@ $w = new Workflows();
 function browserVersion($stats) {
 	$version = 0;
 	foreach ($stats as $key => $val) {
-		if ($version < $key && $val == 'y') {
+		if (!$version && $version < $key && $val == 'y') {
 			$version = $key;
 		}
 	}

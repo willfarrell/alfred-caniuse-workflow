@@ -11,6 +11,7 @@ function browserVersion($stats) {
 	foreach ($stats as $key => $val) {
 		if (!$version && $version < $key && $val == 'y') {
 			$version = $key;
+			break;
 		}
 	}
 	return $version ? $version."+" : "-";

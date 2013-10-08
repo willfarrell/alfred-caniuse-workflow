@@ -33,7 +33,7 @@ if ( filemtime("data.json") <= time()-86400*7  || 1) {
             "url" => $url ,
 			"title" => $title,
 			"description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($val->description))))),
-			"stats" => "\t[C:{$stats['chrome']}, IE:{$stats['ie']}, FF:{$stats['firefox']}, S:{$stats['safari']}]"
+			"stats" => "\t[C:{$stats['chrome']}, FF:{$stats['firefox']}, IE:{$stats['ie']}, S:{$stats['safari']}]"
         );
     }
     if (count($arr)) {

@@ -9,11 +9,17 @@ $w = new Workflows();
 function browserVersion($stats) {
 	$version = 0;
 	foreach ($stats as $key => $val) {
-		if (!$version && $version < $key && $val == 'y') {
-			$version = $key;
-		}
+		if ($version < $key && $val == 'y') {
+			$version = $key."+";
+			break;
+		} elseif ($version < $key && $val == 'y x') {
+			$version = $key."-px-";
+		} elseif ($version < $key && $val == 'p') {
+  			$version = $key."+*";
+  	}
+
 	}
-	return $version ? $version."+" : "-";
+	return $version ? $version : "n/a";
 }
 
 if ( filemtime("data.json") <= time()-86400*7  || 1) {
@@ -33,7 +39,7 @@ if ( filemtime("data.json") <= time()-86400*7  || 1) {
             "url" => $url ,
 			"title" => $title,
 			"description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($val->description))))),
-			"stats" => "\t[C:{$stats['chrome']}, FF:{$stats['firefox']}, IE:{$stats['ie']}, S:{$stats['safari']}]"
+			"stats" => "[IE:{$stats['ie']}, FF:{$stats['firefox']}, GC:{$stats['chrome']}, S:{$stats['safari']}]"
         );
     }
     if (count($arr)) {

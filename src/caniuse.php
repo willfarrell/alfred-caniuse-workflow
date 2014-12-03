@@ -55,11 +55,14 @@ $extras = array();
 $extras2 = array();
 $found = array();
 
+// Fix bug #6
+$query = strtolower(trim($query));
+
 foreach ($data as $key => $result) {
 	$value = strtolower(trim($result->title));
     $description = utf8_decode(strip_tags($result->description));
     
-	if (strpos($value, $query) === 0) {
+	if (strpos( $value, $query ) === 0) {
         if (!isset($found[$value])) {
             $found[$value] = true;
             $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png" );

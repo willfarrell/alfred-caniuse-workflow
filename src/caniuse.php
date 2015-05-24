@@ -4,42 +4,41 @@
 require_once('workflows.php');
 $w = new Workflows();
 
-// cache
-
 function browserVersion($stats) {
-	$version = 0;
-	foreach ($stats as $key => $val) {
-		if ($version < $key && $val == 'y') {
-			$version = $key."+";
-			break;
-		} elseif ($version < $key && $val == 'y x') {
-			$version = $key."-px-";
-		} elseif ($version < $key && $val == 'p') {
-  			$version = $key."+*";
-  	}
+    $version = 0;
+    foreach ($stats as $key => $val) {
+        if ($version < $key && $val == 'y') {
+            $version = $key."+";
+            break;
+        } elseif ($version < $key && $val == 'y x') {
+            $version = $key."-px-";
+        } elseif ($version < $key && $val == 'p') {
+            $version = $key."+*";
+        }
 
-	}
-	return $version ? $version : "n/a";
+    }
+    return $version ? $version : "n/a";
 }
 
-if ( filemtime("data.json") <= time()-86400*7  || 1) {
+// cache
+if ( filemtime("data.json") <= (time() - 86400 * 7)) {
     $data = json_decode(file_get_contents("https://raw.github.com/Fyrd/caniuse/master/data.json"));
     $arr = array();
     foreach ($data->data as $key => $val) {
         $title = $val->title;
         $url = "http://caniuse.com/#feat=" . $key;
         $description = $val->description;
-        
+
         $stats = array();
         foreach ($val->stats as $browser => $stat) {
-	        $stats[$browser] = browserVersion($val->stats->$browser);
+            $stats[$browser] = browserVersion($val->stats->$browser);
         }
-        
+
         $arr[] = array(
             "url" => $url ,
-			"title" => $title,
-			"description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($val->description))))),
-			"stats" => "[IE:{$stats['ie']}, FF:{$stats['firefox']}, GC:{$stats['chrome']}, S:{$stats['safari']}]"
+            "title" => $title,
+            "description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($val->description))))),
+            "stats" => "[IE:{$stats['ie']}, FF:{$stats['firefox']}, GC:{$stats['chrome']}, S:{$stats['safari']}]"
         );
     }
     if (count($arr)) {
@@ -59,10 +58,10 @@ $found = array();
 $query = strtolower(trim($query));
 
 foreach ($data as $key => $result) {
-	$value = strtolower(trim($result->title));
+    $value = strtolower(trim($result->title));
     $description = utf8_decode(strip_tags($result->description));
-    
-	if (strpos( $value, $query ) === 0) {
+
+    if (strpos( $value, $query ) === 0) {
         if (!isset($found[$value])) {
             $found[$value] = true;
             $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png" );
@@ -84,12 +83,12 @@ foreach ($data as $key => $result) {
 }
 
 foreach ($extras as $key => $result) {
-        $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
+    $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
 
 }
 
 foreach ($extras2 as $key => $result) {
-        $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
+    $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
 
 }
 

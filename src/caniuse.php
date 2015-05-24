@@ -4,8 +4,6 @@
 require_once('workflows.php');
 $w = new Workflows();
 
-// cache
-
 function browserVersion($stats) {
     $version = 0;
     foreach ($stats as $key => $val) {
@@ -22,7 +20,8 @@ function browserVersion($stats) {
     return $version ? $version : "n/a";
 }
 
-if ( filemtime("data.json") <= time()-86400*7  || 1) {
+// cache
+if ( filemtime("data.json") <= (time() - 86400 * 7)) {
     $data = json_decode(file_get_contents("https://raw.github.com/Fyrd/caniuse/master/data.json"));
     $arr = array();
     foreach ($data->data as $key => $val) {

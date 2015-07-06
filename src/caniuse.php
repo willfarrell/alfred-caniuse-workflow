@@ -6,18 +6,24 @@ $w = new Workflows();
 
 function browserVersion($stats) {
     $version = 0;
+    $support = '';
     foreach ($stats as $key => $val) {
+        $key = floatval($key);
         if ($version < $key && $val == 'y') {
-            $version = $key."+";
+            $support = $key."+";
             break;
-        } elseif ($version < $key && $val == 'y x') {
-            $version = $key."-px-";
-        } elseif ($version < $key && $val == 'p') {
-            $version = $key."+*";
+        } elseif ($version < $key && strpos($val, 'y x') !== false) {
+            $version = $key;
+            $support = $key."-px-";
+        } elseif ($version < $key && strpos($val, 'a') !== false) {
+            $version = $key;
+            $support = $key."!pa.";
+        } elseif ($version < $key && strpos($val, 'p') !== false) {
+            $version = $key;
+            $support = $key."w/pl";
         }
-
     }
-    return $version ? $version : "n/a";
+    return $support ? $support : "n/a";
 }
 
 // cache

@@ -34,6 +34,8 @@ if ( filemtime("data.json") <= (time() - 86400 * 7)) {
         $title = $val->title;
         $url = "http://caniuse.com/#feat=" . $key;
         $description = $val->description;
+        $keywords = $val->keywords;
+        $name = $key;
 
         $stats = array();
         foreach ($val->stats as $browser => $stat) {
@@ -41,7 +43,9 @@ if ( filemtime("data.json") <= (time() - 86400 * 7)) {
         }
 
         $arr[] = array(
-            "url" => $url ,
+            "name" => $name,
+            "url" => $url,
+            "keywords" => $keywords,
             "title" => $title,
             "description" =>str_replace("&mdash;","-",html_entity_decode(trim(str_replace("\n"," ",strip_tags($val->description))))),
             "stats" => "[IE:{$stats['ie']}, FF:{$stats['firefox']}, GC:{$stats['chrome']}, S:{$stats['safari']}]"
@@ -56,46 +60,51 @@ if (!isset($query)) { $query = urlencode( "css" ); }
 
 $data = json_decode(file_get_contents("data.json"));
 
-$extras = array();
-$extras2 = array();
-$found = array();
+function registerResult($result) {
+    global $w;
+    $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png" );
+    return;
+}
 
-// Fix bug #6
+$found = array();
 $query = strtolower(trim($query));
 
 foreach ($data as $key => $result) {
     $value = strtolower(trim($result->title));
     $description = utf8_decode(strip_tags($result->description));
+    $keywords = utf8_decode($result->keywords);
+    $name = $result->name;
 
     if (strpos( $value, $query ) === 0) {
         if (!isset($found[$value])) {
             $found[$value] = true;
-            $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png" );
+            registerResult($result);
         }
     }
     else if (strpos($value, $query) > 0) {
         if (!isset($found[$value])) {
             $found[$value] = true;
-            $extras[$key] = $result;
+            registerResult($result);
         }
     }
-
+    else if (strpos($name, $query) === 0) {
+        if (!isset($found[$value])) {
+            $found[$value] = true;
+            registerResult($result);
+        }
+    }
+    else if (strpos($keywords, $query) !== false) {
+        if (!isset($found[$value])) {
+            $found[$value] = true;
+            registerResult($result);
+        }
+    }
     else if (strpos($description, $query) !== false) {
         if (!isset($found[$value])) {
             $found[$value] = true;
-            $extras2[$key] = $result;
+            registerResult($result);
         }
     }
-}
-
-foreach ($extras as $key => $result) {
-    $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
-
-}
-
-foreach ($extras2 as $key => $result) {
-    $w->result( $result->title, $result->url, $result->title." ".$result->stats, $result->description, "icon.png"  );
-
 }
 
 echo $w->toxml();

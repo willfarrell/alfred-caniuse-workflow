@@ -20,6 +20,8 @@ Alfred App Workflow for caniuse.com
 
 ![alt text][caniuse]
 
+Upon making your first search the caniuse db is cached (7 days).
+
 ## Commands
 - `caniuse {query}`
 

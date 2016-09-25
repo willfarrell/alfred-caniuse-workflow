@@ -4,6 +4,18 @@
 require_once('workflows.php');
 $w = new Workflows();
 
+function getSSLPage($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_VERBOSE, true);
+    curl_setopt($ch, CURLOPT_HEADER, false);
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
+    $result = curl_exec($ch);
+    curl_close($ch);
+    return $result;
+}
+
 function browserVersion($stats) {
     $version = 0;
     $support = '';
@@ -28,7 +40,7 @@ function browserVersion($stats) {
 
 // cache
 if ( filemtime("data.json") <= (time() - 86400 * 7)) {
-    $data = json_decode(file_get_contents("https://raw.github.com/Fyrd/caniuse/master/data.json"));
+    $data = json_decode(getSSLPage("https://raw.githubusercontent.com/Fyrd/caniuse/master/data.json"));
     $arr = array();
     foreach ($data->data as $key => $val) {
         $title = $val->title;

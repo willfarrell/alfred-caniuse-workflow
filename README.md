@@ -9,7 +9,7 @@ Alfred App Workflow for caniuse.com
 
 ## Installing
 1. Click the download buttons below
-2. Double-click to import into Alfred 2
+2. Double-click to import into Alfred
 3. Review the workflow to add custom Hotkeys
 
 ## About

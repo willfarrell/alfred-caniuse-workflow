@@ -1,10 +1,10 @@
-caniuse ([Download v1.8](https://raw.github.com/willfarrell/alfred-caniuse-workflow/master/caniuse.alfredworkflow))
+caniuse ([Download v1.9](https://raw.github.com/willfarrell/alfred-caniuse-workflow/master/caniuse.alfredworkflow))
 =====================
 
 Alfred App Workflow for caniuse.com
 
 ## Requirements
-1. [Alfred App v2](http://www.alfredapp.com/#download)
+1. [Alfred App v3](http://www.alfredapp.com/#download)
 1. [Alfred Powerpack](https://buy.alfredapp.com/)
 
 ## Installing

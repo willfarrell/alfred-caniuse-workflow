@@ -1,7 +1,5 @@
 <?php
-namespace WillFarrell\AlfredPkgMan;
 
-use SimpleXMLElement;
 
 /**
 * Name:         Workflows

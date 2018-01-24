@@ -79,7 +79,7 @@ function registerResult($result) {
 }
 
 $found = array();
-$query = strtolower(trim($query));
+$query = urldecode(strtolower(trim($query)));
 
 foreach ($data as $key => $result) {
     $value = strtolower(trim($result->title));

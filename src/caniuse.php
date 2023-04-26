@@ -83,8 +83,8 @@ $query = urldecode(strtolower(trim($query)));
 
 foreach ($data as $key => $result) {
     $value = strtolower(trim($result->title));
-    $description = utf8_decode(strip_tags($result->description));
-    $keywords = utf8_decode($result->keywords);
+    $description = mb_convert_encoding(strip_tags($result->description), 'ISO-8859-1', 'UTF-8');
+    $keywords = mb_convert_encoding($result->keywords, 'ISO-8859-1', 'UTF-8');
     $name = $result->name;
 
     if (strpos( $value, $query ) === 0) {

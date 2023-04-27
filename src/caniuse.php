@@ -83,7 +83,7 @@ $query = urldecode(strtolower(trim($query)));
 
 foreach ($data as $key => $result) {
     $value = strtolower(trim($result->title));
-    $description = mb_convert_encoding($result->description, 'UTF-8', mb_list_encodings());
+    $description = mb_convert_encoding(strip_tags($result->description), 'UTF-8', mb_list_encodings());
     $keywords = mb_convert_encoding($result->keywords, 'UTF-8', mb_list_encodings());
     $name = $result->name;
 
